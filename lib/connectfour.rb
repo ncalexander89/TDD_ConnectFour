@@ -10,9 +10,9 @@ class Game # rubocop:disable Style/Documentation
     @turn = 1
   end
 
-  def player_win(turn)
-    player = turn.odd? ? 1 : 2
-    puts "Player '#{player}' Wins!"
+  def player_win
+    @player = @turn.odd? ? 1 : 2
+    puts "Player #{@player} Wins!"
     true
   end
 
@@ -46,7 +46,7 @@ class Game # rubocop:disable Style/Documentation
 
   def player_turn
     @player = @turn.odd? ? 1 : 2
-    puts "Player '#{@player}' select your column"
+    puts "Player #{@player} select your column"
     gets.chomp.to_i
   end
 

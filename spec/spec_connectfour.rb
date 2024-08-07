@@ -10,14 +10,14 @@ describe Game do # rubocop:disable Metrics/BlockLength
   describe 'Player Win' do
     context('When a player has four in a row') do
       it('Displays player 1 as the winner and ends the game') do
-        player = 1
-        allow(game).to receive(:puts).with("Player '#{player}' Wins!")
-        expect(game.player_win(player)).to be true
+        game.instance_variable_set(:@turn, 1)
+        allow(game).to receive(:puts).with('Player 1 Wins!')
+        expect(game.player_win).to be true
       end
       it('Displays player 2 as the winner and ends the game') do
-        player = 2
-        allow(game).to receive(:puts).with("Player '#{player}' Wins!")
-        expect(game.player_win(player)).to be true
+        game.instance_variable_set(:@turn, 2)
+        allow(game).to receive(:puts).with('Player 2 Wins!')
+        expect(game.player_win).to be true
       end
     end
   end
@@ -34,16 +34,14 @@ describe Game do # rubocop:disable Metrics/BlockLength
       it('Player 1 to enter valid input') do
         allow(game).to receive(:gets).and_return('5')
         game.instance_variable_set(:@turn, 1)
-        player_number = game.turn.odd? ? 1 : 2
-        expect(game).to receive(:puts).with("Player '#{player_number}' select your column")
+        expect(game).to receive(:puts).with('Player 1 select your column')
         input_selection = game.player_turn
         expect(input_selection).to eq(5)
       end
       it('Player 2 to enter valid input') do
         allow(game).to receive(:gets).and_return('1')
         game.instance_variable_set(:@turn, 2)
-        player_number = game.turn.odd? ? 1 : 2
-        expect(game).to receive(:puts).with("Player '#{player_number}' select your column")
+        expect(game).to receive(:puts).with('Player 2 select your column')
         input_selection = game.player_turn
         expect(input_selection).to eq(1)
       end
