@@ -35,23 +35,25 @@ describe Game do # rubocop:disable Metrics/BlockLength
         allow(game).to receive(:gets).and_return('5')
         game.instance_variable_set(:@turn, 1)
         expect(game).to receive(:puts).with('Player 1 select your column')
-        input_selection = game.player_turn
-        expect(input_selection).to eq(5)
+        game.player_turn
+        expect(game.instance_variable_get(:@selection)).to eq(5)
       end
       it('Player 2 to enter valid input') do
         allow(game).to receive(:gets).and_return('1')
         game.instance_variable_set(:@turn, 2)
         expect(game).to receive(:puts).with('Player 2 select your column')
-        input_selection = game.player_turn
-        expect(input_selection).to eq(1)
+        game.player_turn
+        expect(game.instance_variable_get(:@selection)).to eq(1)
       end
     end
-    # describe 'Board Update' do
-    #   context('When player enters valid input') do
-    #     it('Updates board with players mark') do
-    #       expect(game.array[0][1]).to eq('x')
-    #     end
-    #   end
-    # end
+    describe 'Board Update' do
+      context('When player enters valid input') do
+        it('Updates board with players mark') do
+          game.instance_variable_set(:@selection, 1)
+          game.board_update
+          expect(game.array[0][0]).to eq('x')
+        end
+      end
+    end
   end
 end

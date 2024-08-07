@@ -47,7 +47,7 @@ class Game # rubocop:disable Style/Documentation
   def player_turn
     @player = @turn.odd? ? 1 : 2
     puts "Player #{@player} select your column"
-    gets.chomp.to_i
+    @selection = gets.chomp.to_i
   end
 
   def game_play
