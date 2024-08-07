@@ -33,15 +33,17 @@ describe Game do # rubocop:disable Metrics/BlockLength
     context('When players turn') do
       it('Player 1 to enter valid input') do
         allow(game).to receive(:gets).and_return('5')
-        player = 1
-        expect(game).to receive(:puts).with("Player '#{player}' select your column")
+        game.instance_variable_set(:@turn, 1)
+        player_number = game.turn.odd? ? 1 : 2
+        expect(game).to receive(:puts).with("Player '#{player_number}' select your column")
         input_selection = game.player_turn
         expect(input_selection).to eq(5)
       end
       it('Player 2 to enter valid input') do
         allow(game).to receive(:gets).and_return('1')
-        player = 1
-        expect(game).to receive(:puts).with("Player '#{player}' select your column")
+        game.instance_variable_set(:@turn, 2)
+        player_number = game.turn.odd? ? 1 : 2
+        expect(game).to receive(:puts).with("Player '#{player_number}' select your column")
         input_selection = game.player_turn
         expect(input_selection).to eq(1)
       end
