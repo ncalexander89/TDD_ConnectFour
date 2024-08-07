@@ -3,11 +3,11 @@
 # connectfour.rb
 
 class Game # rubocop:disable Style/Documentation
-  attr_accessor :array
+  attr_accessor :array, :turn
 
   def initialize
     @array = Array.new(6) { Array.new(7, '.') }
-    board
+    @turn = 1
   end
 
   def player_win(turn)
@@ -16,7 +16,7 @@ class Game # rubocop:disable Style/Documentation
     true
   end
 
-  def board # rubocop:disable Metrics/MethodLength
+  def board # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     puts "
   1   2   3   4   5   6   7
 -----------------------------
@@ -35,11 +35,8 @@ class Game # rubocop:disable Style/Documentation
   "
   end
 
-  def board_array
-    array = Array.new(6) { Array.new(7, '.') }
-    # array[0,[0,1]] = 'x'
-    # p array
-    # visited = Array.new(@board_size) { Array.new(@board_size, false) }
+  def board_update
+    array[0][@selection - 1] = 'x' if array[0][@selection - 1] == '.'
   end
 
   def draw
@@ -47,12 +44,20 @@ class Game # rubocop:disable Style/Documentation
     true
   end
 
-  def player_turn(turn)
-    player = turn.odd? ? 1 : 2
-    puts "Player '#{player}' select your position"
+  def player_turn
+    @player = turn.odd? ? 1 : 2
+    puts "Player '#{@player}' select your column"
     gets.chomp.to_i
+  end
+
+  def game_play
+    board
+    player_turn
+    board_update
+    board
   end
 end
 
-start = Game.new
-start
+# start = Game.new
+# start.game_play
+
