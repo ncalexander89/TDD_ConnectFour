@@ -2,12 +2,29 @@
 
 # connectfour.rb
 
+require 'pry'
+
+
 class Game # rubocop:disable Style/Documentation
   attr_accessor :array, :turn
 
   def initialize
     @array = Array.new(6) { Array.new(7, '.') }
     @turn = 1
+  end
+
+  def check_win # rubocop:disable Metrics/MethodLength
+    i = 0
+    4.times do
+      @horizontal = @array[0][i], @array[0][i + 1], @array[0][i + 2], @array[0][i + 3]
+      if @horizontal.all?('x') || @horizontal.all?('o')
+        player_win
+        return true
+      end
+
+      i += 1 # rubocop:disable Lint/UnreachableCode
+    end
+    false
   end
 
   def player_win
@@ -40,8 +57,10 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def draw
-    puts 'Draw Game!'
-    true
+    if @turn == 42
+      puts 'Draw Game!'
+      true
+    end
   end
 
   def player_turn
@@ -52,12 +71,16 @@ class Game # rubocop:disable Style/Documentation
 
   def game_play
     board
-    player_turn
-    board_update
-    board
+    loop do
+      player_turn
+      board_update
+      board
+      # check_win
+      return if check_win || draw
+    end
   end
 end
 
-# start = Game.new
-# start.game_play
+start = Game.new
+start.game_play
 
