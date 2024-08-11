@@ -13,7 +13,7 @@ class Game # rubocop:disable Style/Documentation
     @turn = 1
   end
 
-  def check_win # rubocop:disable Metrics/MethodLength
+  def check_win
     i = 0
     4.times do
       @horizontal = @array[0][i], @array[0][i + 1], @array[0][i + 2], @array[0][i + 3]
@@ -22,7 +22,7 @@ class Game # rubocop:disable Style/Documentation
         return true
       end
 
-      i += 1 # rubocop:disable Lint/UnreachableCode
+      i += 1
     end
     false
   end
@@ -57,16 +57,24 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def draw
-    if @turn == 42
-      puts 'Draw Game!'
-      true
-    end
+    return unless @turn == 42
+
+    puts 'Draw Game!'
+    true
   end
 
-  def player_turn
+  def player_turn # rubocop:disable Metrics/MethodLength
     @player = @turn.odd? ? 1 : 2
     puts "Player #{@player} select your column"
-    @selection = gets.chomp.to_i
+    loop do
+      input = gets.chomp
+      if input.match?(/^\d$/) && (1..7).include?(input.to_i)
+        @selection = input.to_i
+        return @selection
+      else
+        puts 'Enter a valid number'
+      end
+    end
   end
 
   def game_play
@@ -81,6 +89,6 @@ class Game # rubocop:disable Style/Documentation
   end
 end
 
-start = Game.new
-start.game_play
+# start = Game.new
+# start.game_play
 

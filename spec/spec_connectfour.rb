@@ -25,17 +25,19 @@ describe Game do # rubocop:disable Metrics/BlockLength
     context('When there are no more spaces left') do
       it('Draw Game and ends the game') do
         allow(game).to receive(:puts).with('Draw Game!')
+        game.instance_variable_set(:@turn, 42)
         expect(game.draw).to be true
       end
     end
   end
-  describe 'Player Turn' do
+  describe 'Player Turn' do # rubocop:disable Metrics/BlockLength
     context('When players turn') do
-      it('Player 1 to enter valid input') do
-        allow(game).to receive(:gets).and_return('5')
+      it('Player 1 to enter invalid input then valid input') do
+        allow(game).to receive(:gets).and_return('a', '5')
         game.instance_variable_set(:@turn, 1)
         expect(game).to receive(:puts).with('Player 1 select your column')
-        game.player_turn
+        expect(game).to receive(:puts).with('Enter a valid number')
+        expect(game.player_turn).to eq(5)
         expect(game.instance_variable_get(:@selection)).to eq(5)
       end
       it('Player 2 to enter valid input') do
