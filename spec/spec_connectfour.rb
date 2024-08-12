@@ -9,25 +9,44 @@ describe Game do # rubocop:disable Metrics/BlockLength
     allow(game).to receive(:puts) # Avoid actual printing to console
   end
 
-  describe 'Check Win' do
-    let(:array) do
-      [
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', '.', '.', '.', '.', '.', '.'],
-        ['.', '.', '.', 'x', 'x', 'x', 'x']
-      ]
+  describe 'Check Win' do # rubocop:disable Metrics/BlockLength
+    context('When a player has four in a row horizontally') do
+      let(:array) do
+        [
+          ['.', '.', '.', 'x', 'x', 'x', 'x'],
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.']
+        ]
+      end
+
+      before do
+        game.instance_variable_set(:@array, array) # Set the game board
+      end
+
+      it('Checks the win') do
+        expect(game.check_win).to be true
+      end
     end
 
-    before do
-      game.instance_variable_set(:@array, array) # Set the game board
-      allow(game).to receive(:player_win).and_return(true)
-      game.instance_variable_set(:@turn, 1)
-    end
+    context('When a player has four in a row vertically') do
+      let(:array) do
+        [
+          ['.', '.', '.', '.', '.', '.', 'o'],
+          ['.', '.', '.', '.', '.', '.', 'o'],
+          ['.', '.', '.', '.', '.', '.', 'o'],
+          ['.', '.', '.', '.', '.', '.', 'o'],
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.']
+        ]
+      end
 
-    context('When a player 1 has four in a row horizontally') do
+      before do
+        game.instance_variable_set(:@array, array) # Set the game board
+      end
+
       it('Checks the win') do
         expect(game.check_win).to be true
       end

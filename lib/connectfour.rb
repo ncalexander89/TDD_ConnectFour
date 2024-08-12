@@ -22,34 +22,29 @@ class Game # rubocop:disable Style/Documentation
         end
       end
     end
+
+    7.times do |j|
+      3.times do |i|
+        @vertical = @array[i][j], @array[i + 1][j], @array[i + 2][j], @array[i + 3][j]
+        if @vertical.all?('x') || @vertical.all?('o')
+          player_win
+          return true
+        end
+      end
+    end
+
+    7.times do |i|
+      6.times do |j|
+        @diagonal = @array[j][i], @array[j + 1][i + 1], @array[j + 2][i + 2], @array[j + 3][i + 3]
+        if @diagonal.all?('x') || @diagonal.all?('o')
+          player_win
+          return true
+        end
+      end
+    end
+
     false
   end
-  
-
-    # 6.times do |i|
-    #   2.times do |j|
-    #     @vertical = @array[i][j], @array[i + 1][j], @array[i + 2][j], @array[i + 3][j]
-    #     if @vertical.all?('x') || @vertical.all?('o')
-    #       player_win
-    #       return true
-    #     end
-    #   end
-    # end
-
-
-
-    # 7.times do |i|
-    #   6.times do |j|
-    #     @diagonal = @array[j][i], @array[j + 1][i + 1], @array[j + 2][i + 2], @array[j + 3][i + 3]
-    #     if @diagonal.all?('x') || @diagonal.all?('o')
-    #       player_win
-    #       return true
-    #     end
-    #   end
-    # end
-
-  #   false
-  # end
 
   def player_win
     @player = @turn.odd? ? 1 : 2
