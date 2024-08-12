@@ -53,7 +53,15 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def board_update
-    array[0][@selection - 1] = 'x' if array[0][@selection - 1] == '.'
+    i = 0
+    while array[i][@selection - 1] != '.'
+      i += 1
+    end
+    if @turn.odd?
+      array[i][@selection - 1] = 'x'
+    elsif @turn.even?
+      array[i][@selection - 1] = 'o'
+    end
   end
 
   def draw
@@ -85,10 +93,12 @@ class Game # rubocop:disable Style/Documentation
       board
       # check_win
       return if check_win || draw
+
+      @turn += 1
     end
   end
 end
 
-# start = Game.new
-# start.game_play
+start = Game.new
+start.game_play
 
