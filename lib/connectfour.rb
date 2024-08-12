@@ -4,7 +4,6 @@
 
 require 'pry'
 
-
 class Game # rubocop:disable Style/Documentation
   attr_accessor :array, :turn
 
@@ -14,18 +13,43 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def check_win
-    i = 0
-    4.times do
-      @horizontal = @array[0][i], @array[0][i + 1], @array[0][i + 2], @array[0][i + 3]
-      if @horizontal.all?('x') || @horizontal.all?('o')
-        player_win
-        return true
+    6.times do |i| # Iterate over rows
+      4.times do |j| # Iterate over columns
+        @horizontal = @array[i][j], @array[i][j + 1], @array[i][j + 2], @array[i][j + 3]
+        if @horizontal.all?('x') || @horizontal.all?('o')
+          player_win
+          return true
+        end
       end
-
-      i += 1
     end
     false
   end
+  
+
+    # 6.times do |i|
+    #   2.times do |j|
+    #     @vertical = @array[i][j], @array[i + 1][j], @array[i + 2][j], @array[i + 3][j]
+    #     if @vertical.all?('x') || @vertical.all?('o')
+    #       player_win
+    #       return true
+    #     end
+    #   end
+    # end
+
+
+
+    # 7.times do |i|
+    #   6.times do |j|
+    #     @diagonal = @array[j][i], @array[j + 1][i + 1], @array[j + 2][i + 2], @array[j + 3][i + 3]
+    #     if @diagonal.all?('x') || @diagonal.all?('o')
+    #       player_win
+    #       return true
+    #     end
+    #   end
+    # end
+
+  #   false
+  # end
 
   def player_win
     @player = @turn.odd? ? 1 : 2
@@ -54,9 +78,7 @@ class Game # rubocop:disable Style/Documentation
 
   def board_update
     i = 0
-    while array[i][@selection - 1] != '.'
-      i += 1
-    end
+    i += 1 while array[i][@selection - 1] != '.'
     if @turn.odd?
       array[i][@selection - 1] = 'x'
     elsif @turn.even?
@@ -99,6 +121,5 @@ class Game # rubocop:disable Style/Documentation
   end
 end
 
-start = Game.new
-start.game_play
+
 

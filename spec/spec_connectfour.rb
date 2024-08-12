@@ -4,9 +4,36 @@ require_relative '../lib/connectfour'
 
 describe Game do # rubocop:disable Metrics/BlockLength
   let(:game) { Game.new }
+
   before do
     allow(game).to receive(:puts) # Avoid actual printing to console
   end
+
+  describe 'Check Win' do
+    let(:array) do
+      [
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', 'x', 'x', 'x', 'x']
+      ]
+    end
+
+    before do
+      game.instance_variable_set(:@array, array) # Set the game board
+      allow(game).to receive(:player_win).and_return(true)
+      game.instance_variable_set(:@turn, 1)
+    end
+
+    context('When a player 1 has four in a row horizontally') do
+      it('Checks the win') do
+        expect(game.check_win).to be true
+      end
+    end
+  end
+
   describe 'Player Win' do
     context('When a player has four in a row') do
       it('Displays player 1 as the winner and ends the game') do
@@ -51,10 +78,17 @@ describe Game do # rubocop:disable Metrics/BlockLength
     end
     describe 'Board Update' do
       context('When player enters valid input') do
-        it('Updates board with players mark') do
+        it('Updates board with players 1s mark') do
+          game.instance_variable_set(:@turn, 1)
           game.instance_variable_set(:@selection, 1)
           game.board_update
           expect(game.array[0][0]).to eq('x')
+        end
+        it('Updates board with players 2s mark') do
+          game.instance_variable_set(:@turn, 2)
+          game.instance_variable_set(:@selection, 2)
+          game.board_update
+          expect(game.array[0][1]).to eq('o')
         end
       end
     end
