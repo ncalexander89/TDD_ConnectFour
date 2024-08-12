@@ -13,47 +13,8 @@ class Game # rubocop:disable Style/Documentation
   end
 
   def check_win
-    6.times do |i| # Iterate over rows
-      4.times do |j| # Iterate over columns
-        @horizontal = @array[i][j], @array[i][j + 1], @array[i][j + 2], @array[i][j + 3]
-        if @horizontal.all?('x') || @horizontal.all?('o')
-          player_win
-          return true
-        end
-      end
-    end
-
-    7.times do |j|
-      3.times do |i|
-        @vertical = @array[i][j], @array[i + 1][j], @array[i + 2][j], @array[i + 3][j]
-        if @vertical.all?('x') || @vertical.all?('o')
-          player_win
-          return true
-        end
-      end
-    end
-
-    4.times do |j|
-      3.times do |i|
-        @diagonal_pos = @array[i][j], @array[i + 1][j + 1], @array[i + 2][j + 2], @array[i + 3][j + 3]
-        if @diagonal_pos.all?('x') || @diagonal_pos.all?('o')
-          player_win
-          return true
-        end
-      end
-    end
-
-    3.times do |i|
-      6.downto(3) do |j|
-        @diagonal_neg = @array[i][j], @array[i + 1][j - 1], @array[i + 2][j - 2], @array[i + 3][j - 3]
-        if @diagonal_neg.all?('x') || @diagonal_neg.all?('o')
-          player_win
-          return true
-        end
-      end
-    end
-
-    false
+    checker = Check.new(@array, self) # Create an instance of Check
+    [checker.check_horizontal, checker.check_vertical, checker.check_diagonal_pos, checker.check_diagonal_neg].any?
   end
 
   def player_win
@@ -103,7 +64,7 @@ class Game # rubocop:disable Style/Documentation
     puts "Player #{@player} select your column"
     loop do
       input = gets.chomp
-      if input.match?(/^\d$/) && (1..7).include?(input.to_i)
+      if input.match?(/^\d$/) && (1..7).include?(input.to_i) && @array[5][input.to_i - 1] == '.'
         @selection = input.to_i
         return @selection
       else
@@ -118,13 +79,9 @@ class Game # rubocop:disable Style/Documentation
       player_turn
       board_update
       board
-      # check_win
       return if check_win || draw
 
       @turn += 1
     end
   end
 end
-
-
-

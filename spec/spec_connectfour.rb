@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/connectfour'
+require_relative '../lib/check_win'
 
 describe Game do # rubocop:disable Metrics/BlockLength
   let(:game) { Game.new }
@@ -9,7 +10,15 @@ describe Game do # rubocop:disable Metrics/BlockLength
     allow(game).to receive(:puts) # Avoid actual printing to console
   end
 
-  describe 'Check Win' do # rubocop:disable Metrics/BlockLength
+  describe Check do # rubocop:disable Metrics/BlockLength
+    let(:check) { Check.new(array, game) }
+
+    before do
+      allow(check).to receive(:puts) # Avoid actual printing to console
+      allow(game).to receive(:player_win).and_return(true) # Mock player_win to avoid printing
+      game.instance_variable_set(:@array, array.reverse!) # Set the game board
+    end
+
     context('When a player has four in a row horizontally') do
       let(:array) do
         [
@@ -22,11 +31,8 @@ describe Game do # rubocop:disable Metrics/BlockLength
         ]
       end
 
-      before do
-        game.instance_variable_set(:@array, array) # Set the game board
-      end
-
       it('Checks the win') do
+        expect(check.check_horizontal).to be true
         expect(game.check_win).to be true
       end
     end
@@ -43,11 +49,8 @@ describe Game do # rubocop:disable Metrics/BlockLength
         ]
       end
 
-      before do
-        game.instance_variable_set(:@array, array) # Set the game board
-      end
-
       it('Checks the win') do
+        expect(check.check_vertical).to be true
         expect(game.check_win).to be true
       end
     end
@@ -64,11 +67,8 @@ describe Game do # rubocop:disable Metrics/BlockLength
         ]
       end
 
-      before do
-        game.instance_variable_set(:@array, array.reverse) # Set the game board
-      end
-
       it('Checks the win') do
+        expect(check.check_diagonal_pos).to be true
         expect(game.check_win).to be true
       end
     end
@@ -85,11 +85,8 @@ describe Game do # rubocop:disable Metrics/BlockLength
         ]
       end
 
-      before do
-        game.instance_variable_set(:@array, array.reverse) # Set the game board
-      end
-
       it('Checks the win') do
+        expect(check.check_diagonal_neg).to be true
         expect(game.check_win).to be true
       end
     end
@@ -109,6 +106,7 @@ describe Game do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
   describe 'Draw Game' do
     context('When there are no more spaces left') do
       it('Draw Game and ends the game') do
@@ -118,7 +116,21 @@ describe Game do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
   describe 'Player Turn' do # rubocop:disable Metrics/BlockLength
+    before do
+      game.instance_variable_set(:@array, array.reverse) # Set the game board
+    end
+    let(:array) do
+      [
+        ['x', '.', '.', '.', '.', '.', '.'],
+        ['x', '.', '.', '.', '.', '.', '.'],
+        ['x', '.', '.', '.', '.', '.', '.'],
+        ['x', '.', '.', '.', '.', '.', '.'],
+        ['x', '.', '.', '.', '.', '.', '.'],
+        ['x', '.', '.', '.', '.', '.', '.']
+      ]
+    end
     context('When players turn') do
       it('Player 1 to enter invalid input then valid input') do
         allow(game).to receive(:gets).and_return('a', '5')
@@ -136,21 +148,30 @@ describe Game do # rubocop:disable Metrics/BlockLength
         expect(game.player_turn).to eq(4)
         expect(game.instance_variable_get(:@selection)).to eq(4)
       end
+      it('Player enters column number with no spaces left') do
+        allow(game).to receive(:gets).and_return('1', '6')
+        game.instance_variable_set(:@turn, 1)
+        expect(game).to receive(:puts).with('Player 1 select your column')
+        expect(game).to receive(:puts).with('Enter a valid number')
+        expect(game.player_turn).to eq(6)
+        expect(game.instance_variable_get(:@selection)).to eq(6)
+      end
     end
-    describe 'Board Update' do
-      context('When player enters valid input') do
-        it('Updates board with players 1s mark') do
-          game.instance_variable_set(:@turn, 1)
-          game.instance_variable_set(:@selection, 1)
-          game.board_update
-          expect(game.array[0][0]).to eq('x')
-        end
-        it('Updates board with players 2s mark') do
-          game.instance_variable_set(:@turn, 2)
-          game.instance_variable_set(:@selection, 2)
-          game.board_update
-          expect(game.array[0][1]).to eq('o')
-        end
+  end
+
+  describe 'Board Update' do
+    context('When player enters valid input') do
+      it('Updates board with players 1s mark') do
+        game.instance_variable_set(:@turn, 1)
+        game.instance_variable_set(:@selection, 1)
+        game.board_update
+        expect(game.array[0][0]).to eq('x')
+      end
+      it('Updates board with players 2s mark') do
+        game.instance_variable_set(:@turn, 2)
+        game.instance_variable_set(:@selection, 2)
+        game.board_update
+        expect(game.array[0][1]).to eq('o')
       end
     end
   end
