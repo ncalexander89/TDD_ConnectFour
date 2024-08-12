@@ -2,6 +2,8 @@
 
 require_relative '../lib/connectfour'
 require_relative '../lib/check_win'
+require_relative '../lib/board'
+
 
 describe Game do # rubocop:disable Metrics/BlockLength
   let(:game) { Game.new }
@@ -159,18 +161,32 @@ describe Game do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  describe 'Board Update' do
+  describe 'Board Update' do # rubocop:disable Metrics/BlockLength
+    let(:board) { Board.new(array) }
+    let(:array) do
+      [
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.', '.']
+      ]
+    end
+    before do
+      game.instance_variable_set(:@array, array)
+    end
     context('When player enters valid input') do
       it('Updates board with players 1s mark') do
         game.instance_variable_set(:@turn, 1)
         game.instance_variable_set(:@selection, 1)
-        game.board_update
+        board.board_update(game.instance_variable_get(:@turn), game.instance_variable_get(:@selection))
         expect(game.array[0][0]).to eq('x')
       end
       it('Updates board with players 2s mark') do
         game.instance_variable_set(:@turn, 2)
         game.instance_variable_set(:@selection, 2)
-        game.board_update
+        board.board_update(game.instance_variable_get(:@turn), game.instance_variable_get(:@selection))
         expect(game.array[0][1]).to eq('o')
       end
     end
