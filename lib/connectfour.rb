@@ -8,12 +8,13 @@ require_relative 'board' # Add this line to require the Board class
 require 'pry'
 
 class Game # rubocop:disable Style/Documentation
-  attr_accessor :array, :turn, :board
+  attr_accessor :array, :turn, :board, :selection
 
   def initialize
     @array = (Array.new(6) { Array.new(7, '.') })
     @turn = 1
     @board = Board.new(@array) # Create an instance of Board
+    @selection = nil
   end
 
   def check_win
@@ -52,7 +53,7 @@ class Game # rubocop:disable Style/Documentation
     @board.game_board
     loop do
       player_turn
-      @board.board_update(turn, @selection)
+      @board.board_update(turn, selection)
       @board.game_board
       return if check_win || draw
 

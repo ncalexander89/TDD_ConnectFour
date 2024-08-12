@@ -4,7 +4,6 @@ require_relative '../lib/connectfour'
 require_relative '../lib/check_win'
 require_relative '../lib/board'
 
-
 describe Game do # rubocop:disable Metrics/BlockLength
   let(:game) { Game.new }
 
@@ -163,7 +162,7 @@ describe Game do # rubocop:disable Metrics/BlockLength
 
   describe 'Board Update' do # rubocop:disable Metrics/BlockLength
     let(:board) { Board.new(array) }
-    let(:array) do
+    let!(:array) do
       [
         ['.', '.', '.', '.', '.', '.', '.'],
         ['.', '.', '.', '.', '.', '.', '.'],

@@ -5,11 +5,10 @@
 require_relative 'connectfour'
 
 class Board # rubocop:disable Style/Documentation
-  attr_accessor :array, :game_instance # Add an accessor for @array
+  attr_accessor :array # Add an accessor for @array
 
   def initialize(array)
     @array = array
-    # @game_instance = game_instance # Store the Game instance
   end
 
   def game_board # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
