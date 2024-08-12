@@ -8,7 +8,7 @@ class Game # rubocop:disable Style/Documentation
   attr_accessor :array, :turn
 
   def initialize
-    @array = Array.new(6) { Array.new(7, '.') }
+    @array = (Array.new(6) { Array.new(7, '.') })
     @turn = 1
   end
 
@@ -33,10 +33,20 @@ class Game # rubocop:disable Style/Documentation
       end
     end
 
-    7.times do |i|
-      6.times do |j|
-        @diagonal = @array[j][i], @array[j + 1][i + 1], @array[j + 2][i + 2], @array[j + 3][i + 3]
-        if @diagonal.all?('x') || @diagonal.all?('o')
+    4.times do |j|
+      3.times do |i|
+        @diagonal_pos = @array[i][j], @array[i + 1][j + 1], @array[i + 2][j + 2], @array[i + 3][j + 3]
+        if @diagonal_pos.all?('x') || @diagonal_pos.all?('o')
+          player_win
+          return true
+        end
+      end
+    end
+
+    3.times do |i|
+      6.downto(3) do |j|
+        @diagonal_neg = @array[i][j], @array[i + 1][j - 1], @array[i + 2][j - 2], @array[i + 3][j - 3]
+        if @diagonal_neg.all?('x') || @diagonal_neg.all?('o')
           player_win
           return true
         end

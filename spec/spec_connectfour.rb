@@ -51,6 +51,48 @@ describe Game do # rubocop:disable Metrics/BlockLength
         expect(game.check_win).to be true
       end
     end
+
+    context('When a player has four in a row diagonally positive') do
+      let(:array) do
+        [
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', 'x', '.'],
+          ['.', '.', '.', '.', 'x', '.', '.'],
+          ['.', '.', '.', 'x', '.', '.', '.'],
+          ['.', '.', 'x', '.', '.', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.']
+        ]
+      end
+
+      before do
+        game.instance_variable_set(:@array, array.reverse) # Set the game board
+      end
+
+      it('Checks the win') do
+        expect(game.check_win).to be true
+      end
+    end
+
+    context('When a player has four in a row diagonally negative') do
+      let(:array) do
+        [
+          ['.', '.', '.', '.', '.', '.', '.'],
+          ['.', 'x', '.', '.', '.', '.', '.'],
+          ['.', '.', 'x', '.', '.', '.', '.'],
+          ['.', '.', '.', 'x', '.', '.', '.'],
+          ['.', '.', '.', '.', 'x', '.', '.'],
+          ['.', '.', '.', '.', '.', '.', '.']
+        ]
+      end
+
+      before do
+        game.instance_variable_set(:@array, array.reverse) # Set the game board
+      end
+
+      it('Checks the win') do
+        expect(game.check_win).to be true
+      end
+    end
   end
 
   describe 'Player Win' do
