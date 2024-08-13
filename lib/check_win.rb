@@ -3,8 +3,9 @@
 # check_win.rb
 
 require_relative 'connectfour'
+
 class Check # rubocop:disable Style/Documentation
-  attr_accessor :array, :game_instance # Add an accessor for @array
+  attr_accessor :array, :game_instance
 
   def initialize(array, game_instance)
     @array = array

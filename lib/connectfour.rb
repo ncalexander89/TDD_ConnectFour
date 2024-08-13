@@ -2,8 +2,8 @@
 
 # connectfour.rb
 
-require_relative 'check_win' # Make sure this points to the right file
-require_relative 'board' # Add this line to require the Board class
+require_relative 'check_win'
+require_relative 'board'
 
 require 'pry'
 
@@ -11,14 +11,14 @@ class Game # rubocop:disable Style/Documentation
   attr_accessor :array, :turn, :board, :selection
 
   def initialize
-    @array = (Array.new(6) { Array.new(7, '.') })
+    @array = (Array.new(6) { Array.new(7, '.') }) # First row at the top
     @turn = 1
-    @board = Board.new(@array) # Create an instance of Board
+    @board = Board.new(@array) # Initialises board class with @array
     @selection = nil
   end
 
   def check_win
-    checker = Check.new(@array, self) # Create an instance of Check
+    checker = Check.new(@array, self) # Create an instance of Check with self being the game instance
     [checker.check_horizontal, checker.check_vertical, checker.check_diagonal_pos, checker.check_diagonal_neg].any?
   end
 
@@ -40,6 +40,7 @@ class Game # rubocop:disable Style/Documentation
     puts "Player #{@player} select your column"
     loop do
       input = gets.chomp
+      # Input match single digit from 1 to 7 and available position
       if input.match?(/^\d$/) && (1..7).include?(input.to_i) && @array[5][input.to_i - 1] == '.'
         @selection = input.to_i
         return @selection

@@ -11,7 +11,8 @@ class Board # rubocop:disable Style/Documentation
     @array = array
   end
 
-  def game_board # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+  def game_board # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    # first row is at the bottom
     puts "
   1   2   3   4   5   6   7
   -----------------------------

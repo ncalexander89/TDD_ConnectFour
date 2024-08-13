@@ -5,19 +5,22 @@ require_relative '../lib/check_win'
 require_relative '../lib/board'
 
 describe Game do # rubocop:disable Metrics/BlockLength
-  let(:game) { Game.new }
+  subject(:game) { Game.new } # Subject clarifies that Game is the main object
 
   before do
     allow(game).to receive(:puts) # Avoid actual printing to console
   end
 
+  # Within describe Game
   describe Check do # rubocop:disable Metrics/BlockLength
-    let(:check) { Check.new(array, game) }
+    # Game is reference to subject(:game) instance
+    # Array is reference to let(:array) method
+    subject(:check) { Check.new(array, game) } # Subject clarifies that Check is the main object
 
     before do
       allow(check).to receive(:puts) # Avoid actual printing to console
       allow(game).to receive(:player_win).and_return(true) # Mock player_win to avoid printing
-      game.instance_variable_set(:@array, array.reverse!) # Set the game board
+      game.instance_variable_set(:@array, array.reverse!) # Set the game board, reverses array from top to bottom
     end
 
     context('When a player has four in a row horizontally') do
@@ -149,7 +152,7 @@ describe Game do # rubocop:disable Metrics/BlockLength
         expect(game.player_turn).to eq(4)
         expect(game.instance_variable_get(:@selection)).to eq(4)
       end
-      it('Player enters column number with no spaces left') do
+      it('Player 1 enters column number with no spaces left') do
         allow(game).to receive(:gets).and_return('1', '6')
         game.instance_variable_set(:@turn, 1)
         expect(game).to receive(:puts).with('Player 1 select your column')
